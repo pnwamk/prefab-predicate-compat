@@ -1,6 +1,6 @@
 #lang typed/racket/base
 
-(require (for-syntax racket/base
+(require (for-syntax typed/racket/base
                      version/utils
                      racket/syntax))
 
@@ -44,7 +44,7 @@
           ;; instead get the sound predicate (defined above).
           (with-syntax ([orig-predicate (format-id #'predicate-name "~a?" (syntax-e #'prefab-name))])
             (syntax/loc stx
-              (define predicate-name orig-predicate)))]))]))
+              (define predicate-name : (-> Any Boolean : prefab-name) orig-predicate)))]))]))
 
 
 (module+ test
