@@ -4,24 +4,6 @@
                      version/utils
                      racket/syntax))
 
-;; (define-backwards-compatible-prefab-predicate predicate-name prefab-name)
-;;
-;; In Racket versions <= 6.90.0.28,
-;; (define-backwards-compatible-prefab-predicate Foo? foo)
-;; expands to: (define Foo? foo?)
-;;
-;; This is not sound... but it's not any worse than just using foo (which is all users
-;; have been provided to far).
-;;
-;; In Racket versions > 6.90.0.28,
-;; (define-backwards-compatible-prefab-predicate Foo? foo)
-;; expands to:
-;; (define-predicate Foo? foo)
-;;
-;; Which _is sound_, and generates a predicate for the type described by `foo`
-;; if possible (i.e. it will work for any immutable prefab type `foo` that has
-;; first-order data in its fields).
-
 (provide define-backwards-compatible-flat-prefab-predicate)
 
 (define-syntax (define-backwards-compatible-flat-prefab-predicate stx)
