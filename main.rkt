@@ -1,18 +1,19 @@
 #lang typed/racket/base
 
 (require (for-syntax racket/base
+                     version/utils
                      racket/syntax))
 
 ;; (define-backwards-compatible-prefab-predicate predicate-name prefab-name)
 ;;
-;; In Racket versions < 6.90,
+;; In Racket versions <= 6.90.0.28,
 ;; (define-backwards-compatible-prefab-predicate Foo? foo)
 ;; expands to: (define Foo? foo?)
 ;;
 ;; This is not sound... but it's not any worse than just using foo (which is all users
 ;; have been provided to far).
 ;;
-;; In Racket versions >= 6.90,
+;; In Racket versions > 6.90.0.28,
 ;; (define-backwards-compatible-prefab-predicate Foo? foo)
 ;; expands to:
 ;; (define-predicate Foo? foo)
@@ -29,19 +30,18 @@
      (let ([major-version (string->number (substring (version) 0 1))]
            [minor-version (string->number (substring (version) 2 4))])
        (cond
-         [(or (>= major-version 7)
-              (and (= major-version 6) (>= minor-version 90)))
-          ;; In version 6.90 or greater (roughly) we can generate predicates
+         [(version<? "6.90.0.28" (version))
+          ;; At this point in Typed Racket we can generate predicates
           ;; for prefabs and so we will just do exactly that using `define-predicate`.
           ;; Note: This is sound as it actually checks the field values.
           (syntax/loc stx
             (define-predicate predicate-name prefab-name))]
          [else
-          ;; In versions before 6.90 (roughly) we could not generate predicates for prefab structs
+          ;; Prior to "6.90.0.29" we could not generate predicates for prefab structs
           ;; AND the predicates for prefabs were unsound. For simplicity and backwards compatibility,
           ;; we'll just use that unsound predicate. This is at least no _worse_ than things already
           ;; were for old code, and if the code is loaded in a newer version of Racket it will
-          ;; instead get the sound predicate (defined above)
+          ;; instead get the sound predicate (defined above).
           (with-syntax ([orig-predicate (format-id #'predicate-name "~a?" (syntax-e #'prefab-name))])
             (syntax/loc stx
               (define predicate-name orig-predicate)))]))]))
