@@ -7,7 +7,7 @@ prefab structs in Typed Racket (see the [RFC](https://github.com/racket/typed-ra
 There were a few programs that relied on the previous, unsound behavior
 of prefab predicates.
 
-This package provides a function (`efine-backwards-compatible-prefab-predicate`) 
+This package provides a function (`define-backwards-compatible-prefab-predicate`) 
 which should work for old programs (in the same unsound way prefab predicates have worked) 
 and should fix the soundness issues related to prefab predicates for new programs.
 
