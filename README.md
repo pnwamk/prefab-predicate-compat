@@ -7,14 +7,14 @@ prefab structs in Typed Racket (see the [RFC](https://github.com/racket/typed-ra
 There were a few programs that relied on the previous, unsound behavior
 of prefab predicates.
 
-This package provides a function (`define-backwards-compatible-prefab-predicate`) 
+This package provides a function (`define-backwards-compatible-flat-prefab-predicate`) 
 which should work for old programs (in the same unsound way prefab predicates have worked) 
 and should fix the soundness issues related to prefab predicates for new programs.
 
 In other words, in Racket versions <= 6.90.0.28,
 
 ```
-(define-backwards-compatible-prefab-predicate Foo? foo)
+(define-backwards-compatible-flat-prefab-predicate Foo? foo)
 ```
 
 expands to:
@@ -32,7 +32,7 @@ and it won't break programs relying on older versions of Racket/Typed Racket.
 In Racket versions > 6.90.0.28,
 
 ```
-(define-backwards-compatible-prefab-predicate Foo? foo)
+(define-backwards-compatible-flat-prefab-predicate Foo? foo)
 ```
 
 expands to:
